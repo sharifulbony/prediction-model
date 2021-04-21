@@ -180,12 +180,18 @@ def scrubData(df):
     ], 1, inplace=True)
 
     # df.to_numeric(convert_numeric=True)
+    # df = df.drop(df[df.astype(float).isnull()].index)
     df.fillna(0, inplace=True)
-    # print(df.head())
-    # result_of_interview need to logic only = 1? drop all others?
     df = df[df.result_of_interview == 1]
     df.drop(['result_of_interview'], 1, inplace=True)
     df = df[df.sex == 2]
     df.drop(['sex'], 1, inplace=True)
     df = df[df.outcome_pregnancy != 0]
     df['outcome_pregnancy'].replace(2, 0, inplace=True)
+
+    df['age']=df['age'].astype(float)
+    df['rural']=df['rural'].astype(float)
+    df['marital_status']=df['marital_status'].astype(float)
+    df['outcome_pregnancy']=df['outcome_pregnancy'].astype(int)
+
+    return df
