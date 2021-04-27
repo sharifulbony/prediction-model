@@ -1,5 +1,4 @@
-
-
+import pandas as pd
 def scrubData(df):
     df.drop([
         'w_id',
@@ -93,7 +92,7 @@ def scrubData(df):
         'received_compensation_after_ster',
         'received_compensation_ster_rs'
     ], 1,
-            inplace=True)
+        inplace=True)
 
     df.drop([
         'last_preg_no',
@@ -177,6 +176,17 @@ def scrubData(df):
         , 'rtelephoneno'
         , 'respondentname'
         , 'recordstatus'
+        , 'new_born_alive_female'
+        , 'new_born_alive_male'
+        , 'new_born_alive_total'
+        , 'new_surviving_female'
+        , 'new_surviving_male'
+        , 'new_surviving_total'
+        , 'treatment_source'
+        , 'regular_treatment_source'
+        , 'regular_treatment'
+        , 'v204'
+        , 'months_of_preg_first_anc'
     ], 1, inplace=True)
 
     # df.to_numeric(convert_numeric=True)
@@ -189,9 +199,28 @@ def scrubData(df):
     df = df[df.outcome_pregnancy != 0]
     df['outcome_pregnancy'].replace(2, 0, inplace=True)
 
-    df['age']=df['age'].astype(float)
-    df['rural']=df['rural'].astype(float)
-    df['marital_status']=df['marital_status'].astype(float)
-    df['outcome_pregnancy']=df['outcome_pregnancy'].astype(int)
+    df['age'] = df['age'].astype(float)
+    df['rural'] = df['rural'].astype(float)
+    df['marital_status'] = df['marital_status'].astype(float)
+    df['outcome_pregnancy'] = df['outcome_pregnancy'].astype(int)
+
+    return df
+
+def addMissingColumn(df):
+
+    current_col=df.columns
+    odisha_path = '../../../data/AHS_Woman_18_Assam.csv'
+    odisha_data = pd.read_csv(odisha_path, delimiter='|', nrows=1)
+    data=scrubData(odisha_data)
+    data = data.drop("outcome_pregnancy", axis=1)
+    data2 = data.drop(current_col, axis=1)
+    df=df.append(data2, ignore_index=True)
+    df.fillna(0,inplace=True)
+    df = df[data.columns]
+    df=df.drop(1)
+    # df = df[df.is_currently_pregnant == 1]
+    df["is_currently_pregnant"]=df["is_currently_pregnant"].replace(0,1)
+    # df = df[df.sex == 2]
+    print(df.head())
 
     return df

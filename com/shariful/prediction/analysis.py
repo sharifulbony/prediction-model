@@ -1,4 +1,4 @@
-import graphviz
+
 import joblib
 import pandas as pd
 import numpy as np
@@ -6,7 +6,6 @@ import seaborn as sns
 import seaborn as sns
 import matplotlib.pyplot as plt
 from warnings import filterwarnings
-from binpickle import dump, load
 import shap as shap
 from imblearn.over_sampling import SMOTE
 from mpl_toolkits.mplot3d import Axes3D
@@ -31,24 +30,34 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import BaggingRegressor
 from sklearn.svm import SVR
 from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPRegressor
 from sklearn.neural_network import MLPClassifier
+from sklearn.linear_model import LinearRegression
+from sklearn.cross_decomposition import PLSRegression
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import RidgeCV
+from sklearn.linear_model import Lasso
+from sklearn.linear_model import LassoCV
+from sklearn.linear_model import ElasticNet
+from sklearn.linear_model import ElasticNetCV
+from sklearn import linear_model
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
+import xgboost as xgb
 from xgboost import XGBRegressor, XGBClassifier
 from lightgbm import LGBMRegressor, LGBMClassifier
 from catboost import CatBoostRegressor, CatBoostClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
-
+from sklearn.svm import SVC
+from sklearn import tree
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report, roc_auc_score, roc_curve
 
 import dice_ml
 from dice_ml.utils import helpers
 
 
-
-import eli5
-from eli5.sklearn import PermutationImportance
-#
 
 
 import os
