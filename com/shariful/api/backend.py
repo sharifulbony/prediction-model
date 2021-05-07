@@ -26,10 +26,19 @@ def get_appointment(id):
     js = temp.to_json(orient='records')
     return js
 
+def get_all_appointment():
+    df = pd.read_csv(appointment_path, delimiter='|')
+    js = df.to_json(orient='records')
+    return js
+
 @app.route('/get-appointment')
 def get_appointment_by_id():
     id = request.args['id']
     return get_appointment(id)
+
+@app.route('/get-all-appointment')
+def get_all():
+    return get_all_appointment()
 
 
 def add_appointment(id, name, date, time, hospital):
@@ -80,7 +89,7 @@ def register():
 
 def get_user(phone):
     df = pd.read_csv(user_path, delimiter='|')
-    temp = df.loc[df['phone'].isin([phone])]
+    temp = df.loc[df['phone'].isin([int(phone)])]
     # if(temp==)
     js = temp.to_json(orient='records')
     return js
@@ -88,9 +97,8 @@ def get_user(phone):
 
 @app.route('/login')
 def login():
-    email = request.args['email']
-    password = request.args ['password']
-    js=get_user(email,password)
+    phone = request.args['phone']
+    js=get_user(phone)
     return js
     # if()
 
@@ -129,16 +137,18 @@ def givePrediction():
     # exp = dice_ml.Dice(d, m, method="random")
     # e1 = exp.generate_counterfactuals(df, total_CFs=2, desired_class="opposite")
     # e1.visualize_as_dataframe(show_only_changes=True)
-    #
-    # explainer = shap.TreeExplainer(loaded_model)
-    # shap_values = explainer.shap_values(df)
-    # shap.initjs()
-    # shap.force_plot(explainer.expected_value, shap_values[0,], df.iloc[0,:])
-    # shap.summary_plot(shap_values, df,plot_type='bar',max_display=20)
+
     res = loaded_model.predict(df)
 
     # return jsonify(shap_values.tolist())
-    return pd.Series(res).to_json(orient='records')
+    val="please contact nearest hospital"
+    if(res==1):
+        val = "You are in the risk zone. please book appointment to nearest hospital"
+    elif(res==0):
+        val = "It is advisable to visit Antenatal care each three month"
+    # return pd.Series(res).to_json(orient='records')
+    return jsonify(val)
+
 
 
 app.run()

@@ -55,6 +55,8 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report, roc_auc_score, roc_curve
 
 import dice_ml
+
+from IPython.display import display
 from dice_ml.utils import helpers
 
 
@@ -70,7 +72,6 @@ from collections import Counter
 
 def variance(data):
     print("%.4f - %.4f " % levene(data["age"],
-                                  data["sex"],
                                   data["marital_status"],
                                   data["mother_age_when_baby_was_born"],
                                   data["symptoms_pertaining_illness"],
@@ -86,9 +87,19 @@ def variance(data):
 
 
 def normality(data):
-    for i in data.columns:
-        print("-----" * 10)
-        print("%.3f - %.3f" % shapiro(data[i]))
+    # plt.hist(data)
+
+    # sm.qqplot(data['age'], line='s')
+    #     # plt.show()
+    #     # plt.savefig('age_qq.png')
+    # sm.qqplot(data['wt'], line='s')
+    # plt.show()
+    # plt.savefig('weight_qq.png')
+    sm.qqplot(data['mother_age_when_baby_was_born'], line='s')
+    plt.show()
+    # plt.savefig('baby_age.png')
+
+
 
 
 def makeData():
@@ -120,20 +131,43 @@ def process_data():
     print(data.shape)
     print(data.columns)
 
+    normality(data)
+
     x = data.drop("outcome_pregnancy", axis=1)
     y = data["outcome_pregnancy"]
-    xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.20, random_state=42)
+    xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.20, random_state=1)
 
+    # counter = Counter(yTrain)
+    # print(counter)
+
+    # y0=yTrain[yTrain.outcome_pregnancy==0]
+    # y1=yTrain[yTrain.outcome_pregnancy==1]
+    # plt.scatter(y0,y1)
+    # plt.show
+    # yTrain.plot(style='.')
+
+    # pd.Series.plot(data=yTrain,kind='scatter')
+    # plt.show
+
+    # variance(data)
+
+
+    # for label, n in counter.items():
+    #     row_ix = np.where(yTrain == label)[0]
+    #     plt.scatter(xTrain[row_ix, 0], xTrain.rural[row_ix, 1], label="test")
+    # plt.legend()
+    # plt.show()
+    # print(counter)
     #balancing
     oversample = SMOTE()
     xTrain, yTrain = oversample.fit_resample(xTrain, yTrain)
     xTest, yTest = oversample.fit_resample(xTest, yTest)
-    counter = Counter(yTrain)
-    print(counter)
+    # counter = Counter(yTrain)
+    # print(counter)
 
 
-    print(xTrain.describe())
-    print(yTrain.describe())
+    # print(xTrain.describe())
+    # print(yTrain.describe())
 
 
     #regression models
@@ -143,13 +177,13 @@ def process_data():
     # lasso = Lasso().fit(xTrain, yTrain)
     # elastic_net = ElasticNet().fit(xTrain, yTrain)
     # decision_tree = DecisionTreeRegressor(random_state=42).fit(xTrain, yTrain)
-    knn = KNeighborsRegressor().fit(xTrain, yTrain)
-    bagging = BaggingRegressor(random_state=42, bootstrap_features=True, verbose=False).fit(xTrain, yTrain)
-    random_forest_regressor = RandomForestRegressor(random_state=42, verbose=False).fit(xTrain, yTrain)
-    gradient_boosting = GradientBoostingRegressor(verbose=False).fit(xTrain, yTrain)
-    xg_boost = XGBRegressor().fit(xTrain, yTrain)
-    light_bm_regressor = LGBMRegressor().fit(xTrain, yTrain)
-    cat_boost_regressor = CatBoostRegressor(verbose=False).fit(xTrain, yTrain)
+    # knn = KNeighborsRegressor().fit(xTrain, yTrain)
+    # bagging = BaggingRegressor(random_state=42, bootstrap_features=True, verbose=False).fit(xTrain, yTrain)
+    # random_forest_regressor = RandomForestRegressor(random_state=42, verbose=False).fit(xTrain, yTrain)
+    # gradient_boosting = GradientBoostingRegressor(verbose=False).fit(xTrain, yTrain)
+    # xg_boost = XGBRegressor().fit(xTrain, yTrain)
+    # light_bm_regressor = LGBMRegressor().fit(xTrain, yTrain)
+    # cat_boost_regressor = CatBoostRegressor(verbose=False).fit(xTrain, yTrain)
     # mlpr = MLPRegressor().fit(xTrain, yTrain)
 
     # perm = PermutationImportance(random_forest_regressor, random_state=1).fit(xTest, yTest)
@@ -161,56 +195,80 @@ def process_data():
 
 
 
-    models = [
-        # lm,
-        # Partial_least_squares_regression,
-        # ridge,
-        # lasso,
-        # elastic_net,
-        # decision_tree,
-        knn,
-        bagging,
-        random_forest_regressor,
-        gradient_boosting,
-        xg_boost,
-        light_bm_regressor,
-        cat_boost_regressor,
-        # mlpr
-    ]
+    # models = [
+    #     # lm,
+    #     # Partial_least_squares_regression,
+    #     # ridge,
+    #     # lasso,
+    #     # elastic_net,
+    #     # decision_tree,
+    #     knn,
+    #     bagging,
+    #     random_forest_regressor,
+    #     gradient_boosting,
+    #     xg_boost,
+    #     light_bm_regressor,
+    #     cat_boost_regressor,
+    #     # mlpr
+    # ]
 
-    for model in models:
-        name = model.__class__.__name__
-        R2CV = cross_val_score(model, xTest, yTest, cv=10, scoring="r2").mean()
-        error = -cross_val_score(model, xTest, yTest, cv=10, scoring="neg_mean_squared_error").mean()
-        print(name + ": ")
-        print("-" * 10)
-        print("r2 score : "+str(R2CV))
-        print("neg_mean_squared_error : "+str(np.sqrt(error)))
-        print("-" * 30)
-    r = pd.DataFrame(columns=["MODELS", "R2CV"])
+    # for model in models:
+    #     name = model.__class__.__name__
+    #     R2CV = cross_val_score(model, xTest, yTest, cv=10, scoring="r2").mean()
+    #     error = -cross_val_score(model, xTest, yTest, cv=10, scoring="neg_mean_squared_error").mean()
+    #     print(name + ": ")
+    #     print("-" * 10)
+    #     print("r2 score : "+str(R2CV))
+    #     print("neg_mean_squared_error : "+str(np.sqrt(error)))
+    #     print("-" * 30)
+    # r = pd.DataFrame(columns=["MODELS", "R2CV"])
 
-    for model in models:
-        name = model.__class__.__name__
-        R2CV = cross_val_score(model, xTest, yTest, cv=10, scoring="r2").mean()
-        result = pd.DataFrame([[name, R2CV * 100]], columns=["MODELS", "R2CV"])
-        r = r.append(result)
+    # for model in models:
+    #     name = model.__class__.__name__
+    #     R2CV = cross_val_score(model, xTest, yTest, cv=10, scoring="r2").mean()
+    #     result = pd.DataFrame([[name, R2CV * 100]], columns=["MODELS", "R2CV"])
+    #     r = r.append(result)
 
 
-    figure = plt.figure(figsize=(20, 8))
-    sns.barplot(x="R2CV", y="MODELS", data=r, color="k")
-    plt.xlabel("R2CV")
-    plt.ylabel("MODELS")
-    plt.xlim(-50, 100)
-    plt.title("MODEL ACCURACY COMPARISON")
-    plt.show()
+    # figure = plt.figure(figsize=(20, 8))
+    # sns.barplot(x="R2CV", y="MODELS", data=r, color="k")
+    # plt.xlabel("R2CV")
+    # plt.ylabel("MODELS")
+    # plt.xlim(-50, 100)
+    # plt.title("MODEL ACCURACY COMPARISON")
+    # plt.show()
 
-    ols = sm.OLS(yTrain, xTrain).fit()
-    print(ols.summary())
+    # ols = sm.OLS(yTrain, xTrain).fit()
+    # print(ols.summary())
 
-    #Partial component analysis
-    pca = PCA()
-    xRTrain = pca.fit_transform(scale(xTrain))
-    xRTest = pca.fit_transform(scale(xTest))
+    #Principal component analysis
+    # xPCA = StandardScaler().fit_transform(xTrain)
+    # pca = PCA(n_components=2)
+    # principalComponents = pca.fit_transform(scale(xTrain))
+    #
+    # principalDf = pd.DataFrame(data=principalComponents
+    #                            , columns=['principal component 1', 'principal component 2'])
+    #
+    # finalDf = pd.concat([principalDf, yTrain[['outcome_pregnancy']]], axis=1)
+    #
+    # fig = plt.figure(figsize=(8, 8))
+    # ax = fig.add_subplot(1, 1, 1)
+    # ax.set_xlabel('Principal Component 1', fontsize=15)
+    # ax.set_ylabel('Principal Component 2', fontsize=15)
+    # ax.set_title('2 component PCA', fontsize=20)
+    # targets = [1, 0]
+    # colors = ['r', 'g']
+    #
+    #
+    # for target, color in zip(targets, colors):
+    #     indicesToKeep = finalDf['target'] == target
+    #     ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+    #                , finalDf.loc[indicesToKeep, 'principal component 2']
+    #                , c=color
+    #                , s=50)
+    # ax.legend(targets)
+    #
+    # xRTest = pca.fit_transform(scale(xTest))
 
 
 
@@ -222,18 +280,14 @@ def process_data():
     xgbc = XGBClassifier().fit(xTrain, yTrain)
     lgbmc = LGBMClassifier( num_leaves=30).fit(xTrain, yTrain)
     catbc = CatBoostClassifier(verbose=False).fit(xTrain, yTrain)
-    
-    
+
+
     # row_to_show = 5
     # data_for_prediction = xTest.iloc[row_to_show]  # use 1 row of data here. Could use multiple rows if desired
     # data_for_prediction_array = data_for_prediction.values.reshape(1, -1)
     # rfc.predict_proba(data_for_prediction_ar   ray)
 
-    explainer = shap.TreeExplainer(xgbc)
-    shap_values = explainer.shap_values(xTest)
-    shap.initjs()
-    shap.force_plot(explainer.expected_value, shap_values[0,], xTest.iloc[0,:])
-    shap.summary_plot(shap_values, xTest,plot_type='bar',max_display=20)
+
     # shap.plots.waterfall(shap_values[1],max_display=10)
 
 
@@ -245,19 +299,7 @@ def process_data():
     # plt.title("SHap")
     # plt.show()
 
-    d = dice_ml.Data(dataframe=data, continuous_features=['age','mother_age_when_baby_was_born','when_you_bcome_mother_last_time'], outcome_name='outcome_pregnancy')
-    m = dice_ml.Model(model=rfc, backend="sklearn")
-    exp = dice_ml.Dice(d, m, method="random")
-    e1 = exp.generate_counterfactuals(xTrain[0:1], total_CFs=2, desired_class="opposite")
-    e1.visualize_as_dataframe(show_only_changes=True)
 
-    query_instance = xTrain[0:1]
-    imp = exp.local_feature_importance(query_instance, total_CFs=10)
-    print(imp.local_importance)
-
-    query_instances = xTrain[0:100]
-    imp = exp.global_feature_importance(query_instances)
-    print(imp.summary_importance)
 
     modelsc = [
         # lj,
@@ -284,20 +326,57 @@ def process_data():
         print("neg_mean_squared_error : " +str(np.sqrt(error)))
         print("-" * 30)
 
-    r = pd.DataFrame(columns=["MODELS", "R2CV"])
+    r = pd.DataFrame(columns=["Trained Models", "Cross Validation Score"])
     for model in modelsc:
         name = model.__class__.__name__
         R2CV = cross_val_score(model, xTest, yTest, cv=10, verbose=False).mean()
-        result = pd.DataFrame([[name, R2CV * 100]], columns=["MODELS", "R2CV"])
+        result = pd.DataFrame([[name, R2CV * 100]], columns=["Trained Models", "Cross Validation Score"])
         r = r.append(result)
 
-    figure = plt.figure(figsize=(20, 8))
-    sns.barplot(x="R2CV", y="MODELS", data=r, color="k")
-    plt.xlabel("R2CV")
-    plt.ylabel("MODELS")
+    figure = plt.figure(figsize=(20, 14))
+    # plt.legend(fontsize="x-large")
+    sns.set(font_scale=2)
+    sns.barplot(x="Cross Validation Score", y="Trained Models", data=r, color="k",orient="h")
+    plt.xlabel("Cross Validation Score")
+    plt.ylabel("Trained Models")
     plt.xlim(0, 100)
     plt.title("MODEL ACCURACY COMPARISON")
+    plt.subplots_adjust(left=0.3)
     plt.show()
+
+    #SHAP
+
+    explainer = shap.TreeExplainer(rfc)
+    shap_values = explainer.shap_values(xTest)
+    shap.initjs()
+    figure = plt.figure(figsize=(20, 12))
+    # shap.force_plot(explainer.expected_value, shap_values[0,], xTest.iloc[0,:])
+
+    shap.summary_plot(shap_values, xTest,plot_type='bar',max_display=20)
+    plt.subplots_adjust(left=0.3)
+    plt.show()
+
+    f = plt.figure(figsize=(20, 12))
+    plt.subplots_adjust(left=0.3)
+    shap.summary_plot(shap_values, xTest)
+    f.savefig("summary_plot1.png", bbox_inches='tight', dpi=600)
+    plt.show()
+
+
+    #dice part
+    d = dice_ml.Data(dataframe=data, continuous_features=['age','mother_age_when_baby_was_born','wt'], outcome_name='outcome_pregnancy')
+    m = dice_ml.Model(model=rfc, backend="sklearn")
+    exp = dice_ml.Dice(d, m, method="random")
+    e1 = exp.generate_counterfactuals(xTrain[0:1], total_CFs=2, desired_class="opposite")
+    display(e1.visualize_as_dataframe(show_only_changes=True))
+
+    query_instance = xTrain[0:1]
+    imp = exp.local_feature_importance(query_instance, total_CFs=10)
+    print(imp.local_importance)
+
+    query_instances = xTrain[0:100]
+    imp = exp.global_feature_importance(query_instances)
+    print(imp.summary_importance)
 
     # https: // scikit - learn.org / stable / modules / generated / sklearn.preprocessing.StandardScaler.html
     scaler = StandardScaler().fit(xTrain, yTrain)
@@ -305,7 +384,7 @@ def process_data():
     xRTest = scaler.transform(xTest)
 
     mlpc = MLPClassifier().fit(xRTrain, yTrain)
-    predict = mlpc.predict(xRTest)
+    predict = mlpc.predict(xTest)
 
     R2CV = cross_val_score(mlpc, xRTest, yTest, cv=10).mean()
     print(R2CV)
@@ -318,25 +397,25 @@ def process_data():
     #           "learning_rate": [0.1, 0.01, 0.02, 0.05],
     #           "min_child_samples": [5, 10, 20]}
 
-    params = {"n_estimators": [100],
-              "subsample": [0.6, 0.8],
-              "max_depth": [3, 4, 5],
-              "learning_rate": [0.1, 0.01, 0.02],
-              "min_child_samples": [5, 10]}
+    # params = {"n_estimators": [100],
+    #           "subsample": [0.6, 0.8],
+    #           "max_depth": [3, 4, 5],
+    #           "learning_rate": [0.1, 0.01, 0.02],
+    #           "min_child_samples": [5, 10]}
+    #
+    # cv = GridSearchCV(lgbmc, params, cv=10, verbose=False, n_jobs=-1).fit(xTrain, yTrain)
+    # print(cv.best_params_)
+    # print(cv.best_score_)
+    #
+    # lgbmc_tuned = LGBMClassifier(learning_rate=0.01, max_depth=5, min_child_samples=10,
+    #                             n_estimators=100, subsample=0.6).fit(xTrain, yTrain)
+    #
+    # R2CV_tuned = cross_val_score(lgbmc_tuned, xTest, yTest, cv=10).mean()
+    # print(R2CV_tuned)
+    # error_tuned = -cross_val_score(lgbmc_tuned, xTest, yTest, cv=10, scoring="neg_mean_squared_error").mean()
+    # print(np.sqrt(error_tuned))
 
-    cv = GridSearchCV(lgbmc, params, cv=10, verbose=False, n_jobs=-1).fit(xTrain, yTrain)
-    print(cv.best_params_)
-    print(cv.best_score_)
-
-    lgbmc_tuned = LGBMClassifier(learning_rate=0.01, max_depth=5, min_child_samples=10,
-                                n_estimators=100, subsample=0.6).fit(xTrain, yTrain)
-
-    R2CV_tuned = cross_val_score(lgbmc_tuned, xTest, yTest, cv=10).mean()
-    print(R2CV_tuned)
-    error_tuned = -cross_val_score(lgbmc_tuned, xTest, yTest, cv=10, scoring="neg_mean_squared_error").mean()
-    print(np.sqrt(error_tuned))
-
-    joblib.dump(lgbmc_tuned, '../../../data/saved_model/model.bpk')
+    joblib.dump(rfc, '../../../data/saved_model/model.bpk')
 
     loaded_model=joblib.load('../../../data/saved_model/model.bpk',)
 

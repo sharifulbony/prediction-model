@@ -222,5 +222,7 @@ def addMissingColumn(df):
     df["is_currently_pregnant"]=df["is_currently_pregnant"].replace(0,1)
     # df = df[df.sex == 2]
     print(df.head())
+    # df=pd.to_numeric(df, errors='coerce')
+    df=df.astype('float')
 
     return df
