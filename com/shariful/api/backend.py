@@ -7,11 +7,13 @@ import pandas as pd
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from flask import jsonify
+from flask_cors import CORS
 
 from com.shariful.prediction.scrubbing.scrub import addMissingColumn
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+CORS(app)
 
 appointment_path= '../../../data/db/appointment.csv'
 user_path= '../../../data/db/user.csv'
@@ -110,11 +112,11 @@ def askQuestion():
     chatbot = ChatBot('Helper Bot')
     question = request.args['question']
     trainer = ChatterBotCorpusTrainer(chatbot)
-    trainer.train("chatterbot.corpus.bangla.emotions")
+    # trainer.train("chatterbot.corpus.bangla.emotions")
     trainer.train("chatterbot.corpus.bangla.greetings")
     trainer.train("chatterbot.corpus.english.conversations")
-    trainer.train("chatterbot.corpus.english.emotion")
-    trainer.train("chatterbot.corpus.english.greetings")
+    # trainer.train("chatterbot.corpus.english.emotion")
+    # trainer.train("chatterbot.corpus.english.greetings")
     # Get a response to an input statement
     response = chatbot.get_response(question)
     text = response.text
