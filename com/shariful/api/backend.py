@@ -120,6 +120,50 @@ def askQuestion():
     text = response.text
     return jsonify(text)
 
+def generate_message(res,model,df):
+    d = dice_ml.Data(dataframe=df, continuous_features=[
+        'age',
+        # 'mother_age_when_baby_was_born',
+        'age_at_first_conception',
+        'wt'
+    ], outcome_name='outcome_pregnancy')
+    m = dice_ml.Model(model=model, backend="sklearn")
+    exp = dice_ml.Dice(d, m, method="random")
+    e1 = exp.generate_counterfactuals(df, total_CFs=2, desired_class="opposite")
+    e1.visualize_as_dataframe(show_only_changes=True)
+    data2 = e1.cf_examples_list[0].final_cfs_df_sparse
+    # data=data.append(data2)
+    message=""
+
+    if( not data2.empty):
+        nunique = data2.apply(pd.Series.nunique)
+        cols_to_drop = nunique[nunique == 1].index
+        data2 = data2.drop(cols_to_drop, axis=1)
+        column_name = data2.columns.tolist()
+        message = "You are identified as risk group for your pregnancy. The reason of the risk is identified as "
+        for column in column_name:
+            print(column)
+            column = column.replace("_", " ")
+            if (column == "wt"):
+                column = column.replace("wt", "weight")
+            if (column == "during pregnancy"):
+                column = column.replace("during pregnancy", " status of  antenatal care visit during pregnancy")
+            if (column == "during lactation"):
+                column = column.replace("during lactation", " status of  antenatal care visit during lactation")
+            if ("anm" in column):
+                column = column.replace("anm", "antenatal care")
+            if ("is" in column):
+                column = column.replace("is", "status of")
+
+            message += column + ", "
+            print(column)
+        new = " and"
+        message = new.join(message.rsplit(",", 1))
+        print(message)
+    else:
+        message="You are identified as risk group for your pregnancy. please contact your nearest hospital"
+    return message
+
 
 @app.route('/predict', methods=['POST'])
 def givePrediction():
@@ -127,28 +171,14 @@ def givePrediction():
     df = pd.json_normalize(content)
     df = addMissingColumn(df)
     loaded_model = joblib.load('../../../data/saved_model/model.bpk', )
-
-    # d = dice_ml.Data(dataframe=df, continuous_features=[
-    #     'age',
-    #     'mother_age_when_baby_was_born',
-    #     'pregnant_month'
-    # ], outcome_name='outcome_pregnancy')
-    # m = dice_ml.Model(model=loaded_model, backend="sklearn")
-    # exp = dice_ml.Dice(d, m, method="random")
-    # e1 = exp.generate_counterfactuals(df, total_CFs=2, desired_class="opposite")
-    # e1.visualize_as_dataframe(show_only_changes=True)
-
     res = loaded_model.predict(df)
-
-    # return jsonify(shap_values.tolist())
-    val="please contact nearest hospital"
-    if(res==1):
-        val = "You are in the risk zone. please book appointment to nearest hospital"
-    elif(res==0):
-        val = "It is advisable to visit Antenatal care each three month"
-    # return pd.Series(res).to_json(orient='records')
-    return jsonify(val)
-
+    print(res[0])
+    message=""
+    if (res[0] == 1):
+        message=generate_message(res,loaded_model,df)
+    else:
+        message= "It is advisable to visit Antenatal care each three month during pregnancy."
+    return jsonify(message)
 
 
 app.run()

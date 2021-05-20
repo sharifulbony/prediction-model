@@ -197,8 +197,8 @@ def scrubData(df):
     df = df[df.sex == 2]
     df.drop(['sex'], 1, inplace=True)
     df = df[df.outcome_pregnancy != 0]
+    df = df[df.anm_in_last_3_months != 0]
     df['outcome_pregnancy'].replace(2, 0, inplace=True)
-
     df['age'] = df['age'].astype(float)
     df['rural'] = df['rural'].astype(float)
     df['marital_status'] = df['marital_status'].astype(float)
