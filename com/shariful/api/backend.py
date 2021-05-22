@@ -8,6 +8,7 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from flask import jsonify
 from flask_cors import CORS
+import firebase
 
 from com.shariful.prediction.scrubbing.scrub import addMissingColumn
 
@@ -112,9 +113,11 @@ def askQuestion():
     chatbot = ChatBot('Helper Bot')
     question = request.args['question']
     trainer = ChatterBotCorpusTrainer(chatbot)
+    trainer.train("../../../data/dictionary/bangla.yml")
+    trainer.train("../../../data/dictionary/english.yml")
     # trainer.train("chatterbot.corpus.bangla.emotions")
-    trainer.train("chatterbot.corpus.bangla.greetings")
-    trainer.train("chatterbot.corpus.english.conversations")
+    # trainer.train("chatterbot.corpus.bangla.greetings")
+    # trainer.train("chatterbot.corpus.english.conversations")
     # trainer.train("chatterbot.corpus.english.emotion")
     # trainer.train("chatterbot.corpus.english.greetings")
     # Get a response to an input statement
@@ -122,7 +125,7 @@ def askQuestion():
     text = response.text
     return jsonify(text)
 
-def generate_message(res,model,df):
+def generate_message(model,df):
     d = dice_ml.Data(dataframe=df, continuous_features=[
         'age',
         # 'mother_age_when_baby_was_born',
@@ -164,6 +167,7 @@ def generate_message(res,model,df):
         print(message)
     else:
         message="You are identified as risk group for your pregnancy. please contact your nearest hospital"
+
     return message
 
 
@@ -177,10 +181,18 @@ def givePrediction():
     print(res[0])
     message=""
     if (res[0] == 1):
-        message=generate_message(res,loaded_model,df)
+        message=generate_message(loaded_model,df)
+        firebase.sendPush(title="risk alert", msg=message)
     else:
         message= "It is advisable to visit Antenatal care each three month during pregnancy."
+        firebase.sendPush(title="info", msg=message)
     return jsonify(message)
+
+@app.route('/noti')
+def sentNoti():
+    # firebase.send_all()
+    firebase.sendPush(title="sample", msg="ok")
+    return jsonify("success")
 
 
 app.run()
