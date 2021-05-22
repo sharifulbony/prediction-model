@@ -45,19 +45,21 @@ def normality(data):
     plt.show()
 
 def makeData():
-   odisha_path='../../../data/AHS_Woman_21_Odisha.csv'
-   rajsthan_path='../../../data/AHS_Woman_08_Rajasthan.csv'
-   assam_path='../../../data/AHS_Woman_18_Assam.csv'
-   jharkhand_path='../../../data/AHS_Woman_20_Jharkhand.csv'
-   chattisgarh_path='../../../data/AHS_Woman_22_Chhattisgarh.csv'
+   odisha_path='../../../data/used_data/AHS_Woman_21_Odisha.csv'
+   rajsthan_path='../../../data/used_data/AHS_Woman_08_Rajasthan.csv'
+   assam_path='../../../data/used_data/AHS_Woman_18_Assam.csv'
+   jharkhand_path='../../../data/used_data/AHS_Woman_20_Jharkhand.csv'
+   chattisgarh_path='../../../data/used_data/AHS_Woman_22_Chhattisgarh.csv'
 
-   odisha_data = pd.read_csv(odisha_path, delimiter='|', nrows=500)
-   rajsthan_data = pd.read_csv(rajsthan_path, delimiter='|', nrows=500)
-   assam_data = pd.read_csv(assam_path, delimiter='|', nrows=500)
-   jharkhand_data = pd.read_csv(jharkhand_path, delimiter='|', nrows=500)
-   chattisgarh_data = pd.read_csv(chattisgarh_path, delimiter='|', nrows=500)
+   odisha_data = pd.read_csv(odisha_path, delimiter='|', nrows=1000)
+   rajsthan_data = pd.read_csv(rajsthan_path, delimiter='|', nrows=1000)
+   assam_data = pd.read_csv(assam_path, delimiter='|', nrows=1000)
+   jharkhand_data = pd.read_csv(jharkhand_path, delimiter='|', nrows=1000)
+   chattisgarh_data = pd.read_csv(chattisgarh_path, delimiter='|', nrows=1000)
    frames=[odisha_data,rajsthan_data,assam_data,jharkhand_data,chattisgarh_data]
    data=pd.concat(frames)
+   data.to_csv('../../../data/used.csv', index=False)
+
    return data
 
 def process_data():

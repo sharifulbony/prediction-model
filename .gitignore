@@ -1,4 +1,8 @@
 /.idea/
-/data/*
+/data/new_data/*
+/data/saved_model/*
+/data/used_data/*
 /catboost_info/*
+/com/shariful/prediction/catboost_info/*
+/com/shariful/api/db.sqlite3*
 

@@ -1,0 +1,198 @@
+Sl_no,Variable_name,Description
+1,w_id,w_id
+2,hl_id,hl_id
+3,client_w_id,client_w_id
+4,state,State
+5,district,District
+6,rural,Rural/Urban
+7,stratum_code,Stratum
+8,PSU_ID,This field has been provided to hide the identification of record below District level. It is a seven digit number to uniquely identify each record.
+9,house_no,House Number
+10,house_hold_no,Household Number
+11,year_of_intr,Year of Interview
+12,month_of_intr,Month of Interview
+13,date_of_intr,Date of Interview
+14,result_of_interview,Result of Interview
+15,other_int_code,Result of Interview-Others
+16,serial_no,Serial Number
+17,identifcation_code,Identitification Code
+18,age,Age
+19,marital_status,Marital Status
+20,delivered_any_baby,Have you delivered a live baby
+21,born_alive_female,How many children have been born alive ever ?-Female
+22,born_alive_male,How many children have been born alive ever ?-Male
+23,born_alive_total,How many children have been born alive ever ?-Total
+24,surviving_female,How many children have been born alive ever are surviving ?-Female
+25,surviving_male,How many children have been born alive ever are surviving?-Male
+26,surviving_total,How many children have been born alive ever are surviving?-Total
+27,mother_age_when_baby_was_born,What was your age at first live birth? (In completed years)
+28,outcome_pregnancy,Has the outcome of any pregnancy(s) resulted in live birth/still birth/abortion
+29,last_preg_no,Last Pregnancy No.
+30,previous_last_preg_no,Previous to Last Pregnancy No.
+31,second_last_preg_no,Second Last Pregnancy No.
+32,third_last_preg_no,Third Last Pregnancy No.
+33,w_expall_status,w_expall_status
+34,w_status,w_status
+35,twsi_id,twsi_id
+36,client_twsi_id,client_twsi_id
+37,currently_widow,currently_widow
+38,is_tubectomy,Modern Method-Tubectomy
+39,is_vasectomy,Modern Method-Vasectomy
+40,is_copper_t,Modern Method-Copper-T/IUD
+41,is_pills_daily,Modern Method-Pills(Daily
+42,is_piils_weekly,Modern Method-Pills (weekly)
+43,is_emergency_contraceptive,Modern Method-Emergency contraceptive Pill
+44,is_condom,Modern Method-Condom/ Nirodh
+45,is_moder_methods,Modern Method-Other Modern Method
+46,is_contraceptive,Traditional Method-Contraceptive Herbs
+47,is_periodic_abstinence,Traditional Method-Rhythm/periodic abstinence
+48,is_withdrawal,Traditional Method-Withdrawal
+49,is_amenorrahoea,Traditional Method-Lactational Amenorrhoea Method(LAM)
+50,is_other_traditional_method,Traditional Method-Other Traditional Method
+51,is_currently_pregnant,Are you currently Pregnant? 
+52,pregnant_month,Record number of months of completed of pregnancy
+53,is_anc_registered,Are you registered for ANC?
+54,willing_to_get_pregnant,"When you became pregnant this time, did you want to become pregnant now, did you want to wait until later, or did you not want to have any (more) children at all?"
+55,is_currently_menstruating,Are you currently menstruating?
+56,when_you_bcome_mother_last_time,"When you became mother last time, did you want this child then, did you want to wait until later or did you not want to have any (more) children at all?"
+57,is_any_fp_methos_used,Are you or your husband currently using any method(s) of family planning?
+58,fp_method_used,specify the most used method.
+59,source_of_treatment_for_fp,where did you or your husband got the operation done?
+60,how_long_using_this_method,How long have you or your husband been using this method continuously?
+61,method_obtain_last_time,From where did you obtain this method last time?
+62,reason_for_not_using_fp_method,What is the main reason for currently not using any method of family planning?
+63,is_method_used_in_last_5_yrs,Have you /your husband used any method in the past and discontinued?
+64,method_type_used_in_last_5_yrs,specify the most used method? 
+65,reason_for_discontinuation,What was the main reason for discontinuing the use of the method in the past? 
+66,intend_to_use_fp_method_in_futur,"Do you intend to use any method of family planning, any time in the future?"
+67,when_method_is_going_to_use,When do you want to use?
+68,whch_meth_going_to_pref_for_fp,Which method would you prefer to use
+69,want_more_childern,Would you like to have another child?
+70,next_child_preference,What would you prefer as your next child?
+71,time_for_next_child,How long would you like to wait to have another child?
+72,anm_in_last_3_months,Did an ANM/ Health worker visit you during the last three months?
+73,during_pregnancy,Have you availed Anganwadi Services during the pregnancy and/or lactation for the last surviving child?-During Pregnancy
+74,during_lactation,Have you availed Anganwadi Services during the pregnancy and/or lactation for the last surviving child?-During Lactation
+75,aware_abt_rti,Have you heard of RTI/STI?
+76,aware_abt_hiv,Have you heard of HIV / AIDS?
+77,aware_of_haf,Are you aware about the administration of HAF/ ORT / ORS and Zinc during diarrhoea?
+78,aware_of_the_danger_signs,Are you aware of the danger signs of Acute Respiratory Infection (ARI) / Pneumonia?
+79,twsi_expall_status,twsi_expall_status
+80,FID,FID
+81,hh_id,hh_id
+82,client_hh_id,client_hh_id
+83,currently_dead_or_out_migrated,currently_dead_or_out_migrated
+84,hh_serial_no,hh_serial_no
+85,sex,Sex 
+86,usual_residance,Whether usual Resident ?
+87,relation_to_head,Relationship to head
+88,member_identity,Identification code of members of the Household
+89,father_serial_no,Serial No. of father
+90,mother_serial_no,Serial No. of mother
+91,date_of_birth,Date of Birth
+92,month_of_birth,Month of Birth
+93,year_of_birth,Year of Birth
+94,religion,Religion
+95,social_group_code,Social Group
+96,date_of_marriage,Date of first marriage
+97,month_of_marriage,Month of first marriage
+98,year_of_marriage,Year of first marriage
+99,currently_attending_school,Whether currently attending school
+100,reason_for_not_attending_school,Main reason of not-attending
+101,highest_qualification,Highest educational qualification attained  (for age 7 years and above)
+102,occupation_status,Occupation / Activity Status during last 365 days (for age 5 yrs. and above)
+103,disability_status,Whether having any form of disability as on Date of Survey?
+104,injury_treatment_type,Type of treatment for injury during last 1 year
+105,illness_type,Type of illness
+106,treatment_source,Source of Treatment
+107,symptoms_pertaining_illness,Symptom(s) Pertaining to illness persisting for more than one month
+108,sought_medical_care,Sought medical care
+109,diagnosed_for,Has Diagnosed for
+110,diagnosis_source,Source of Diagnosis
+111,regular_treatment,Getting Regular Treatment
+112,regular_treatment_source,source of treatment
+113,chew,Chew
+114,smoke,Smoke
+115,alcohol,Consume Alcohol
+116,status,status
+117,hh_expall_status,hh_expall_status
+118,client_hl_id,client_hl_id
+119,house_status,Status of House
+120,house_structure,Type of Structure of the House where the household is living
+121,owner_status,Ownership status of the house where the household is living
+122,drinking_water_source,Main Source of Drinking water
+123,is_water_filter,Does the household treat the water in any way to make it safer to drink
+124,water_filteration,"If code 1 in Col.10,what does the household usually do to make water safer to drink?(code)"
+125,toilet_used,Type of toilet facility mainly used(code)
+126,is_toilet_shared,Whether toilet facility is shared?
+127,household_have_electricity,Does the household have electricity?
+128,lighting_source,Main source of lighting
+129,cooking_fuel,Main source of fuel used for cooking
+130,no_of_dwelling_rooms,Number of dwelling rooms exclusively in possession of the household
+131,kitchen_availability,Availability of Kitchen
+132,is_radio,Radio/Transistor
+133,is_television,Television
+134,is_computer,"Computer/Laptop (Yes-1,No-2)"
+135,is_telephone,Telephone/Mobile phone
+136,is_washing_machine,Washing Machine
+137,is_refrigerator,Refrigerator
+138,is_sewing_machine,Sewing machine
+139,is_bicycle,Bicycle
+140,is_scooter,Motor/Scooter/Moped
+141,is_car,Car/Jeep/Van
+142,is_tractor,Tractor
+143,is_water_pump,Water Pump/Tube Well
+144,cart,Cart
+145,land_possessed,Land Possessed
+146,hl_expall_status,hl_expall_status
+147,SN,SN
+148,ever_conceived,Have you ever conceived?
+149,no_of_times_conceived,"If Yes, how many times have you conceived?"
+150,age_at_first_conception,What was your age at first conception? (In completed years)
+151,current_mar_status,current_mar_status
+152,is_injectable_contraceptive,Modern Method-Injectible Contraceptives
+153,months_of_preg_first_anc,How many months pregnant were you at the time of first ANC?
+154,is_husband_living_with_you,Is your husband living with you?
+155,compensation_after_ster,Did you/your husband receive the compensation after sterilization?
+156,received_compensation_after_ster,"If Yes, when did you/your husband receive compensation for sterilization?"
+157,received_compensation_ster_rs,How much compensation did you/your husband receive?
+158,health_prob_afters_fp_use,Have you/your husband had any health problems after you/your husband started using this method?
+159,counselled_for_menstrual_hyg,Have you ever been counselled for menstrual hygiene?
+160,aware_abt_haf,Are you aware about the administration of HAF during diarrhoea?
+161,aware_abt_ort_ors,Are you aware about the administration of ORT / ORS during diarrhoea?
+162,aware_abt_ort_ors_zinc,Are you aware about the administration of ORT / ORS and Zinc during diarrhoea?
+163,aware_abt_danger_signs_new_born,Are you aware of the danger signs of new born?
+164,new_born_alive_female,new_born_alive_female
+165,new_born_alive_male,new_born_alive_male
+166,new_born_alive_total,new_born_alive_total
+167,new_surviving_female,new_surviving_female
+168,new_surviving_male,new_surviving_male
+169,new_surviving_total,new_surviving_total
+170,IsDeadMigrated,IsDeadMigrated
+171,residancial_status,Residential Status
+172,IsCoveredByHealthScheme,Whether covered by any health scheme or health insurance?
+173,HealthScheme_1,top two health schemes/health insurance in order of priority1
+174,HealthScheme_2,top two health schemes/health insurance in order of priority2
+175,HouseStatus,Status of House as on date of Survey
+176,HouseholdStatus,Status of Household (existing)
+177,IsHeadChanged,If Head of Household Changed
+178,ever_born,ever_born
+179,wt,Weight
+180,FIDx,FIDx
+181,AS,Asset Score
+182,AS_Binned,Asset Score Binned
+183,FIDH,FIDH
+184,CDOI,CDOI
+185,EDT,EDT
+186,occupation,occupation
+187,catage1,catage1
+188,marital,marital
+189,modern,modern
+190,Traditional,Traditional
+191,anym,anym
+192,IsNewRecord,IsNewRecord
+193,RecordUpdatedCount,RecordUpdatedCount
+194,RecordStatus,RecordStatus
+195,Schedule_Id,Schedule_Id
+196,Year,Round of AHS Survey
+197,id,id
