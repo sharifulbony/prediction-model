@@ -209,7 +209,7 @@ def scrubData(df):
 def addMissingColumn(df):
 
     current_col=df.columns
-    odisha_path = '../../../data/AHS_Woman_18_Assam.csv'
+    odisha_path = '../../../data/used_data/AHS_Woman_18_Assam.csv'
     odisha_data = pd.read_csv(odisha_path, delimiter='|', nrows=1)
     data=scrubData(odisha_data)
     data = data.drop("outcome_pregnancy", axis=1)

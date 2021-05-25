@@ -3,6 +3,7 @@ from __future__ import print_function
 import datetime
 
 from firebase_admin import messaging
+import service
 
 import firebase_admin
 from firebase_admin import credentials
@@ -10,14 +11,28 @@ from firebase_admin import credentials
 cred = credentials.Certificate("../../../data/firebase/sheba-f1a73-firebase-adminsdk-yjtrm-71783ff88a.json")
 firebase_admin.initialize_app(cred)
 
-token = 'e2U7HhOMTX-7hJRAFXuXM6:APA91bH-HvejJREHyZl8qXGAH7a6UWuyTKpeqVT0n5qzuk3bhVeNhLs09VcyGZKp24hSf1Gjux621Yzcg_SDN-n3jJxOcA6JYk0ZC6a-LWNSZMpIxCXSi513IhZpMJ4d5FOr9MoaawW7'
+token = 'cHfM0grKTSC7cR3Tv7d7_k:APA91bEK57W_B1WkyVLDYRYWP0-xiYKeL7IB3-dvvD79FC3qO3c1o091VM2Sq147WS0n2NQkiuU_YLBciKM-u5zmzjljHlm18QCSiGCqpSp3_AJPOGMViqXn9dbif-aNO0rRRxbVcbCp'
+
+def getToken(id):
+    data=service.get_device(id)
+    # token_col = data.loc[:, 'token']
+    # token=token_col.values
+    # token = data['token'].to_numpy()
+    # token = data['token'].to_numpy()
+    token = data['token'].tolist()
+    # token = data.loc[:,'token']
+
+    return token
 
 
-def sendPush(title, msg, dataObject=None):
+
+def sendPush(id,title, msg, dataObject=None):
     # See documentation on defining a message payload.
-    registration_token = [
-        'e2U7HhOMTX-7hJRAFXuXM6:APA91bH-HvejJREHyZl8qXGAH7a6UWuyTKpeqVT0n5qzuk3bhVeNhLs09VcyGZKp24hSf1Gjux621Yzcg_SDN-n3jJxOcA6JYk0ZC6a-LWNSZMpIxCXSi513IhZpMJ4d5FOr9MoaawW7'
-        ]
+    registration_token = getToken(id)
+
+    # registration_token=[
+    #     'cHfM0grKTSC7cR3Tv7d7_k:APA91bEK57W_B1WkyVLDYRYWP0-xiYKeL7IB3-dvvD79FC3qO3c1o091VM2Sq147WS0n2NQkiuU_YLBciKM-u5zmzjljHlm18QCSiGCqpSp3_AJPOGMViqXn9dbif-aNO0rRRxbVcbCp'
+    # ]
 
     message = messaging.MulticastMessage(
         notification=messaging.Notification(
@@ -28,7 +43,7 @@ def sendPush(title, msg, dataObject=None):
         tokens=registration_token,
     )
 
-    # Send a message to the device corresponding to the provided
+    # Send a message to the device.csv corresponding to the provided
     # registration token.
     response = messaging.send_multicast(message)
     # Response is a message ID string.
@@ -50,7 +65,7 @@ def send_to_token():
         token=registration_token,
     )
 
-    # Send a message to the device corresponding to the provided
+    # Send a message to the device.csv corresponding to the provided
     # registration token.
     response = messaging.send(message)
     # Response is a message ID string.
